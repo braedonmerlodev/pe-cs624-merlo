@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Platform } from 'react-native';
 
+import { HelloWorld } from '@/components/HelloWorld';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
@@ -15,6 +16,7 @@ export default function HomeScreen() {
           style={styles.reactLogo}
         />
       }>
+      <HelloWorld />
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
