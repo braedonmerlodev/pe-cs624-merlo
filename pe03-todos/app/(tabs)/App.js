@@ -26,6 +26,8 @@ class App extends Component {
                 text: this.state.inputValue,
                 complete: false
             };
+
+            console.log('todo', todo);
             
             this.setState({
                 todos: [...this.state.todos, todo], // Add new todo to array
