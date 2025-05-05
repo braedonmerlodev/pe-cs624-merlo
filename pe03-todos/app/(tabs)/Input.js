@@ -12,7 +12,7 @@ const Input = ({inputValue, inputChange, submitTodo}) => (
       onChangeText={inputChange}
     />
     <TouchableOpacity style={styles.button} onPress={submitTodo}>
-      <Text style={styles.buttonText}>Add</Text>
+      <Text style={styles.buttonText}>Submit</Text>
     </TouchableOpacity>
   </View>
 );
@@ -32,16 +32,24 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-  button: {
-    width: 80,
-    backgroundColor: 'red',
+  buttonContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    marginVertical: 10,
   },
+  button: {
+   backgroundColor: '#f0f0f0',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#e0e0e0',
+    alignItems: 'center',
+},
   buttonText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: '#333',
+    fontFamily: 'System',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
