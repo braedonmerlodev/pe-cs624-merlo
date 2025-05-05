@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-const Input = ({inputValue, inputChange}) => (
+const Input = ({inputValue, inputChange, submitTodo}) => (
   <View style={styles.inputContainer}>
     <TextInput
       value={inputValue}
@@ -11,6 +11,9 @@ const Input = ({inputValue, inputChange}) => (
       selectionColor="#666666"
       onChangeText={inputChange}
     />
+    <TouchableOpacity style={styles.button} onPress={submitTodo}>
+      <Text style={styles.buttonText}>Add</Text>
+    </TouchableOpacity>
   </View>
 );
 
@@ -28,6 +31,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingLeft: 10,
     paddingRight: 10,
+  },
+  button: {
+    width: 80,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
