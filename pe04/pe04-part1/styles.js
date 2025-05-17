@@ -36,6 +36,28 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
   },
+textContainer: {
+  padding: 16,
+},
+nameText: {
+  fontSize: 28,
+  fontWeight: 'bold',
+  color: 'white',
+  textAlign: 'center',  
+  marginBottom: 8,
+},
+titleText: {
+  fontSize: 16,
+  color: 'black',
+  marginBottom: 16,
+  textDecorationLine: 'underline', 
+  textAlign: 'center',  
+},
+bodyText: {
+  fontSize: 12,
+  color: 'black',
+  lineHeight: 12,
+},
 });
 
 export default styles;
