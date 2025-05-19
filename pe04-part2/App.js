@@ -1,31 +1,61 @@
-// Listing 5.3 Scaling ProfileCard from full size to thumbnail
-/*
-    If you press the thumbnail, the component will return to full size. 
-    If you press the full-size component, it will collapse back down into a thumbnail view.
-    By reorganizing the structure of the component, you can better handle adding more ProfileCard components to the application. 
-    
-    In section 5.3, you’ll add more ProfileCards and see how to organize them into a gallery layout.
-*/
 import React, { Component } from 'react';
-// PropTypes lets you specify what properties the ProfileCard component can accept.
 import PropTypes from 'prop-types'; 
-
-// The immutability helper function update lets you update a specific piece of the component’s state.
-// npm install immutability-helper --save
 import update from 'immutability-helper'; 
-
-/*
-  Imports the Platform utility component to programmatically select styles based on the platform.
-*/
-import { Platform, Image, StyleSheet, Text, View, TouchableHighlight } from 'react-native'; 
+import { Platform, Image, Text, View, TouchableHighlight, ScrollView } from 'react-native'; 
+import styles from './styles';
 
 const userImage = require('./assets/images/user.png');
 
-const data = [{
+// Helper function to chunk array into rows of 2
+function chunkArray(array, size) {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+}
+
+const data = [
+  {
     image: userImage,
     name: 'John Doe',
     occupation: 'React Native Developer',
-    description: 'John is a really great Javascript developer. ' + 'He loves using JS to build React Native applications ' + 'for iOS and Android',
+    description: 'John is a really great Javascript developer. He loves using JS to build React Native applications for iOS and Android',
+    showThumbnail: true
+  },
+  {
+    image: userImage,
+    name: 'Jane Smith',
+    occupation: 'UI/UX Designer',
+    description: 'Jane creates beautiful and user-friendly interfaces for mobile apps.',
+    showThumbnail: true
+  },
+  {
+    image: userImage,
+    name: 'Carlos Ruiz',
+    occupation: 'Backend Engineer',
+    description: 'Carlos specializes in building robust APIs and scalable backend systems.',
+    showThumbnail: true
+  },
+  {
+    image: userImage,
+    name: 'Priya Patel',
+    occupation: 'Project Manager',
+    description: 'Priya ensures projects are delivered on time and within scope.',
+    showThumbnail: true
+  },
+  {
+    image: userImage,
+    name: 'Liu Wei',
+    occupation: 'QA Analyst',
+    description: 'Liu is passionate about software quality and automated testing.',
+    showThumbnail: true
+  },
+  {
+    image: userImage,
+    name: 'Fatima Al-Farsi',
+    occupation: 'DevOps Engineer',
+    description: 'Fatima automates deployments and manages cloud infrastructure.',
     showThumbnail: true
   }
 ];
@@ -33,35 +63,23 @@ const data = [{
 const ProfileCard = (props) => {
   const { image, name, occupation, description, onPress, showThumbnail } = props;
   let containerStyles = [styles.cardContainer];
-
   if (showThumbnail) {  
     containerStyles.push(styles.cardThumbnail);
   }
-
   return (
-    <TouchableHighlight onPress={onPress}> 
-      <View style={[containerStyles]}>
+    <TouchableHighlight onPress={onPress} underlayColor="transparent">
+      <View style={containerStyles}>
         <View style={styles.cardImageContainer}>
-          <Image style={styles.cardImage} source={require('./assets/images/user.png')} />
+          <Image source={image} style={styles.cardImage} />
         </View>
-        <View>
-          <Text style={styles.cardName}>
-            {name}
-          </Text>
-        </View>
+        <Text style={styles.cardName}>{name}</Text>
         <View style={styles.cardOccupationContainer}>
-          <Text style={styles.cardOccupation}>
-            {occupation}
-          </Text>
+          <Text style={styles.cardOccupation}>{occupation}</Text>
         </View>
-        <View>
-          <Text style={styles.cardDescription}>
-            {description}
-          </Text>
-        </View>
+        <Text style={styles.cardDescription}>{description}</Text>
       </View>
     </TouchableHighlight>
-  )
+  );
 };
 
 ProfileCard.propTypes = {
@@ -89,132 +107,30 @@ export default class App extends Component {
   };
   
   render() {
-    const list = this.state.data.map(function(item, index) { 
-      const { image, name, occupation, description, showThumbnail } = item;
-      return <ProfileCard key={'card-' + index}
-                   image={image}
-                   name={name}
-                   occupation={occupation}
-                   description={description}
-                   onPress={this.handleProfileCardPress.bind(this, index)}
-                   showThumbnail={showThumbnail}/>
-    }, this);
+    // Group cards into rows of 2
+    const rows = chunkArray(this.state.data, 2);
 
     return (
-      <View style={styles.container}>
-        {list} 
-      </View>
+      <ScrollView contentContainerStyle={styles.container}>
+        {rows.map((row, rowIndex) => (
+          <View
+            key={rowIndex}
+            style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}
+          >
+            {row.map((item, colIndex) => (
+              <ProfileCard
+                key={'card-' + (rowIndex * 2 + colIndex)}
+                image={item.image}
+                name={item.name}
+                occupation={item.occupation}
+                description={item.description}
+                onPress={() => this.handleProfileCardPress(rowIndex * 2 + colIndex)}
+                showThumbnail={item.showThumbnail}
+              />
+            ))}
+          </View>
+        ))}
+      </ScrollView>
     );
   }
 }
-
-const profileCardColor = 'dodgerblue';
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    /*
-      Adds a drop shadow to the card container based on the platform
-    */
-    cardContainer: {
-        alignItems: 'center',
-        borderColor: 'black',
-        borderWidth: 3,
-        borderStyle: 'solid',
-        borderRadius: 20,
-        backgroundColor: profileCardColor,
-        width: 300,
-        height: 400,
-        ...Platform.select({ 
-          ios: {
-            shadowColor: 'black',
-            shadowOffset: {
-              height: 10
-            },
-            shadowOpacity: 1
-          },
-          android: {
-            elevation: 15
-          }
-        })
-    },
-    /*
-      Adds a drop shadow to the circular image container
-    */
-    cardImageContainer: {
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderWidth: 3,
-        borderColor: 'black',
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        marginTop: 30,
-        paddingTop: 15,
-        ...Platform.select({ 
-          ios: {
-            shadowColor: 'black',
-            shadowOffset: {
-              height: 10,
-            },
-            shadowOpacity: 1
-          },
-          android: {
-            borderWidth: 3,
-            borderColor: 'black',
-            elevation: 15
-          }
-        })
-    },
-    cardImage: {
-        width: 80,
-        height: 80
-    },
-    /*
-        You can use the textShadowColor, textShadowOffset, and textShadowRadius properties to add a shadow to a Text element. 
-        To create a shadow, you need to specify three things:
-            The color
-            The offset
-            The radius
-
-        The offset specifies the position of the shadow relative to the component casting the shadow. 
-        The radius basically defines how blurry the shadow appears.
-    */
-    cardName: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 24,
-        marginTop: 30,
-        textShadowColor: 'black',
-        textShadowOffset: {
-            height: 5,
-            width: 5
-        },
-        textShadowRadius: 3 
-    },
-    cardOccupationContainer: {
-        borderColor: 'black',
-        borderBottomWidth: 3
-    },
-    cardOccupation: {
-        fontWeight: 'bold', 
-        marginTop: 10,
-        marginBottom: 10,
-    },
-    cardDescription: {
-        fontStyle: 'italic', 
-        marginTop: 10,
-        marginRight: 40,
-        marginLeft: 40,
-        marginBottom: 10
-    },
-    /*
-        The cardThumbnail style reduces the component’s size by 80%.
-    */
-        cardThumbnail: {
-          transform: [{scale: 0.2}]
-      },
-});
