@@ -29,7 +29,6 @@ class City extends React.Component {
   render() {
     const { cities, city } = this.props.route.params;
 
-    // Derive the updated version of the city from the global cities array
     const updatedCity = cities.find((item) => item.id === city.id) || city;
 
     return (
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   locationName: {
-    fontSize: 20,
+    fontSize: 18,
   },
   locationInfo: {
     color: 'rgba(0, 0, 0, .5)',
