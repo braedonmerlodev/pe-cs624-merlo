@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import CenterMessage from '../components/CenterMessage';
 import { colors } from '../theme';
 
@@ -45,18 +45,23 @@ const exampleCountries = [
 	},
 ];
 
-function Countries({ countries = exampleCountries }) {
+function Countries({ countries = exampleCountries, navigation, updateCountry }) {
 	return (
 		<ScrollView contentContainerStyle={[!countries.length && { flex: 1 }]}>
 			<View style={[!countries.length && { justifyContent: 'center', flex: 1 }]}>
 				{!countries.length && <CenterMessage message="No saved countries!" />}
 				{countries.map((item, index) => (
-					<View style={styles.countryContainer} key={index}>
-						<Text style={styles.country}>{item.name}</Text>
-            <Text style={styles.currency}>
-              {item.currency.code} ({item.currency.code === 'USD' ? 'used' : 'not used'})
-            </Text>
-					</View>
+					<TouchableOpacity
+						key={index}
+						onPress={() => navigation.navigate('Country', { country: item, updateCountry })}
+					>
+						<View style={styles.countryContainer}>
+							<Text style={styles.country}>{item.name}</Text>
+							<Text style={styles.currency}>
+								{item.currency.code} ({item.currency.code === 'USD' ? 'used' : 'not used'})
+							</Text>
+						</View>
+					</TouchableOpacity>
 				))}
 			</View>
 		</ScrollView>

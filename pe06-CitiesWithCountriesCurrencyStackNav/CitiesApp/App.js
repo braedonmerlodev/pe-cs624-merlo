@@ -12,12 +12,14 @@ import Cities from './src/Cities/Cities';
 import City from './src/Cities/City';
 import AddCity from './src/AddCity/AddCity';
 import Countries from './src/Countries/Countries';
+import Country from './src/Countries/Country';
 import AddCountry from './src/Countries/AddCountry';
 import { colors } from './src/theme';
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const CountriesStack = createNativeStackNavigator();
 
 function CitiesStackScreen({ navigation, route, cities, addCity, addLocation }) {
   return (
@@ -42,6 +44,39 @@ function CitiesStackScreen({ navigation, route, cities, addCity, addLocation }) 
         )}
       />
     </Stack.Navigator>
+  );
+}
+
+function CountriesStackScreen({ navigation, route, countries, updateCountry }) {
+  return (
+    <CountriesStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.primary,
+        },
+        headerTintColor: '#fff',
+      }}
+    >
+      <CountriesStack.Screen
+        name="Countries"
+        children={(props) => (
+          <Countries
+            {...props}
+            countries={countries}
+            updateCountry={updateCountry}
+          />
+        )}
+      />
+      <CountriesStack.Screen
+        name="Country"
+        children={(props) => (
+          <Country
+            {...props}
+            updateCountry={updateCountry}
+          />
+        )}
+      />
+    </CountriesStack.Navigator>
   );
 }
 
@@ -105,9 +140,10 @@ export default class App extends Component {
           <Tab.Screen
             name="Countries"
             children={(props) => (
-              <Countries
+              <CountriesStackScreen
                 {...props}
                 countries={this.state.countries}
+                updateCountry={this.updateCountry}
               />
             )}
           />

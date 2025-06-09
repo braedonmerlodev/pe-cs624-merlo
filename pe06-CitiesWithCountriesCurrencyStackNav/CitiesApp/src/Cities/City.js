@@ -40,7 +40,7 @@ class City extends React.Component {
               !updatedCity.locations.length && { flex: 1, justifyContent: 'center' },
             ]}
           >
-            {!updatedCity.locations.length && <CenterMessage message="No locations for this city!" />}
+            {!updatedCity.locations.length && <CenterMessage message="No information about this city!" />}
             {updatedCity.locations.map((location, index) => (
               <View key={index} style={styles.locationContainer}>
                 <Text style={styles.locationName}>{location.name}</Text>
