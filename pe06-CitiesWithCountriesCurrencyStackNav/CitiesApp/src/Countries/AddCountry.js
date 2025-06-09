@@ -8,7 +8,10 @@ export default function AddCountry({ addCountry, navigation }) {
 
   const handleSubmit = () => {
     if (name && currency) {
-      addCountry({ name, currency });
+      addCountry({
+        name,
+        currency: { code: currency, used: true }
+      });
       setName('');
       setCurrency('');
       if (navigation) navigation.goBack();
