@@ -4,10 +4,15 @@ import CenterMessage from '../components/CenterMessage';
 import { colors } from '../theme';
 
 class Country extends React.Component {
-  state = {
-    name: '',
-    info: '',
-  };
+  constructor(props) {
+    super(props);
+    const { country } = props.route.params;
+    this.state = {
+      name: '',
+      info: '',
+      facts: country.facts || [],
+    };
+  }
 
   onChangeText = (key, value) => {
     this.setState({ [key]: value });
@@ -15,14 +20,12 @@ class Country extends React.Component {
 
   addFact = () => {
     const { updateCountry, country } = this.props.route.params;
-    const { name, info } = this.state;
+    const { name, info, facts } = this.state;
 
     if (name === '' || info === '') return;
 
     const fact = { name, info };
-
-    const currentFacts = this.state.facts || country.facts || [];
-    const newFacts = [...currentFacts, fact];
+    const newFacts = [...facts, fact];
 
     if (updateCountry) {
       updateCountry({
@@ -35,11 +38,7 @@ class Country extends React.Component {
   };
 
   render() {
-    const { countries, country } = this.props.route.params;
-    const updatedCountry =
-      (countries && countries.find((item) => item.name === country.name)) || country;
-
-    const facts = updatedCountry.facts || [];
+    const { facts, name, info } = this.state;
 
     return (
       <View style={{ flex: 1 }}>
@@ -62,14 +61,14 @@ class Country extends React.Component {
         <TextInput
           onChangeText={(val) => this.onChangeText('name', val)}
           placeholder="Country Name"
-          value={this.state.name}
+          value={name}
           style={styles.input}
           placeholderTextColor="white"
         />
         <TextInput
           onChangeText={(val) => this.onChangeText('info', val)}
           placeholder="Country Information"
-          value={this.state.info}
+          value={info}
           style={[styles.input, styles.input2]}
           placeholderTextColor="white"
         />
