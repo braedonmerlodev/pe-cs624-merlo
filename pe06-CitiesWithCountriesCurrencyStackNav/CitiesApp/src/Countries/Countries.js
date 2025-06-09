@@ -58,7 +58,7 @@ function Countries({ countries = exampleCountries, navigation, updateCountry }) 
 						<View style={styles.countryContainer}>
 							<Text style={styles.country}>{item.name}</Text>
 							<Text style={styles.currency}>
-								{item.currency.code} ({item.currency.used ? 'used' : 'not used'})
+								{item.currency.code} ({item.currency.code === 'USD' ? 'used' : 'not used'})
 							</Text>
 						</View>
 					</TouchableOpacity>
